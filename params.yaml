@@ -1,0 +1,24 @@
+data:
+  raw_path: data/raw/dataset.csv
+  processed_path: data/processed/processed.csv
+  target_column: target
+  min_rows: 100
+
+training:
+  test_size: 0.2
+  random_state: 42
+
+model:
+  type: random_forest
+  n_estimators: 100
+  max_depth: null
+  random_state: 42
+
+validation:
+  min_accuracy: 0.92
+  min_precision: 0.92
+  min_recall: 0.92
+  min_f1: 0.93
+
+mlflow:
+  experiment_name: breast-cancer-classifier
