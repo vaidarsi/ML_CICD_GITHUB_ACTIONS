@@ -50,7 +50,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Breast Cancer Classifier API",
+    title="Wine Classifier API",
     version=config.MODEL_VERSION,
     lifespan=lifespan,
 )
@@ -91,7 +91,7 @@ async def metrics_middleware(request: Request, call_next):
 @app.get("/")
 def root() -> dict:
     return {
-        "app": "Breast Cancer Classifier API",
+        "app": "Wine Classifier API",
         "model_version": config.MODEL_VERSION,
         "environment": config.ENVIRONMENT,
         "endpoints": ["/health", "/predict", "/metrics", "/docs"],
