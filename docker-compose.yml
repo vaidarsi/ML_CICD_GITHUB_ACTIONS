@@ -1,0 +1,19 @@
+services:
+  api:
+    build: .
+    image: breast-cancer-api:local
+    container_name: bc-api
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: bc-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - api
+    restart: unless-stopped
