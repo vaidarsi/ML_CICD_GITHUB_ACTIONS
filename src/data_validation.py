@@ -7,7 +7,7 @@ from pandas.api.types import is_numeric_dtype
 
 from src import config
 
-VALID_TARGET_VALUES = {0, 1}
+VALID_TARGET_VALUES = {0, 1, 2}
 
 
 def validate_dataframe(df: pd.DataFrame) -> list[str]:
@@ -47,16 +47,19 @@ def validate_file(path=config.RAW_DATA_PATH) -> list[str]:
     """Validate the dataset file at `path`."""
     if not path.exists():
         return [f"Dataset not found: {path}"]
+
     return validate_dataframe(pd.read_csv(path))
 
 
 def main() -> None:
     errors = validate_file()
+
     if errors:
         print("DATA VALIDATION FAILED:")
         for e in errors:
             print(f"  - {e}")
         sys.exit(1)
+
     print("DATA VALIDATION PASSED")
 
 

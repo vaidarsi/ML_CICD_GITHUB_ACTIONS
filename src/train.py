@@ -35,6 +35,7 @@ def load_data(path=config.PROCESSED_DATA_PATH):
 def split_data(X, y):
     """Split into train and test sets using params.yaml."""
     p = config.PARAMS["training"]
+
     return train_test_split(
         X,
         y,
@@ -47,6 +48,7 @@ def split_data(X, y):
 def build_model() -> RandomForestClassifier:
     """Create the model from params.yaml."""
     m = config.PARAMS["model"]
+
     return RandomForestClassifier(
         n_estimators=m["n_estimators"],
         max_depth=m["max_depth"],
@@ -55,13 +57,20 @@ def build_model() -> RandomForestClassifier:
 
 
 def evaluate(model, X_test, y_test) -> dict:
-    """Return a dictionary of evaluation metrics."""
+    """Return evaluation metrics for the 3-class Wine dataset."""
     y_pred = model.predict(X_test)
+
     return {
         "accuracy": float(accuracy_score(y_test, y_pred)),
-        "precision": float(precision_score(y_test, y_pred)),
-        "recall": float(recall_score(y_test, y_pred)),
-        "f1_score": float(f1_score(y_test, y_pred)),
+        "precision": float(
+            precision_score(y_test, y_pred, average="macro")
+        ),
+        "recall": float(
+            recall_score(y_test, y_pred, average="macro")
+        ),
+        "f1_score": float(
+            f1_score(y_test, y_pred, average="macro")
+        ),
     }
 
 
@@ -73,28 +82,47 @@ def save_reports(model, X_test, y_test, metrics: dict) -> None:
         json.dump(metrics, f, indent=2)
 
     y_pred = model.predict(X_test)
+
+    class_names = [
+        "class_0",
+        "class_1",
+        "class_2",
+    ]
+
     report = classification_report(
-        y_test, y_pred, target_names=["malignant", "benign"]
+        y_test,
+        y_pred,
+        target_names=class_names,
     )
+
     (config.REPORTS_DIR / "classification_report.txt").write_text(
-        report, encoding="utf-8"
+        report,
+        encoding="utf-8",
     )
 
     ConfusionMatrixDisplay.from_predictions(
-        y_test, y_pred, display_labels=["malignant", "benign"]
+        y_test,
+        y_pred,
+        display_labels=class_names,
     )
-    plt.title("Confusion Matrix")
-    plt.savefig(config.REPORTS_DIR / "confusion_matrix.png", bbox_inches="tight")
+
+    plt.title("Wine Dataset - Confusion Matrix")
+    plt.savefig(
+        config.REPORTS_DIR / "confusion_matrix.png",
+        bbox_inches="tight",
+    )
     plt.close()
 
 
 def train() -> dict:
     """Run the full training pipeline and return the metrics."""
     X, y = load_data()
+
     X_train, X_test, y_train, y_test = split_data(X, y)
 
     model = build_model()
     model.fit(X_train, y_train)
+
     metrics = evaluate(model, X_test, y_test)
 
     # Save the model file
@@ -106,26 +134,65 @@ def train() -> dict:
 
     # Log to MLflow
     mlflow.set_tracking_uri(config.MLFLOW_TRACKING_URI)
-    mlflow.set_experiment(config.PARAMS["mlflow"]["experiment_name"])
+    mlflow.set_experiment(
+        config.PARAMS["mlflow"]["experiment_name"]
+    )
+
     with mlflow.start_run() as run:
-        mlflow.log_param("model_type", config.PARAMS["model"]["type"])
-        mlflow.log_param("n_estimators", config.PARAMS["model"]["n_estimators"])
-        mlflow.log_param("max_depth", config.PARAMS["model"]["max_depth"])
-        mlflow.log_param("random_state", config.PARAMS["model"]["random_state"])
-        mlflow.log_param("test_size", config.PARAMS["training"]["test_size"])
-        mlflow.log_param("model_version_tag", config.MODEL_VERSION)
+        mlflow.log_param(
+            "model_type",
+            config.PARAMS["model"]["type"],
+        )
+        mlflow.log_param(
+            "n_estimators",
+            config.PARAMS["model"]["n_estimators"],
+        )
+        mlflow.log_param(
+            "max_depth",
+            config.PARAMS["model"]["max_depth"],
+        )
+        mlflow.log_param(
+            "random_state",
+            config.PARAMS["model"]["random_state"],
+        )
+        mlflow.log_param(
+            "test_size",
+            config.PARAMS["training"]["test_size"],
+        )
+        mlflow.log_param(
+            "model_version_tag",
+            config.MODEL_VERSION,
+        )
+        mlflow.log_param(
+            "dataset",
+            "Wine",
+        )
+        mlflow.log_param(
+            "num_classes",
+            3,
+        )
 
         mlflow.log_metrics(metrics)
 
-        mlflow.sklearn.log_model(model, artifact_path="model")
-        mlflow.log_artifacts(str(config.REPORTS_DIR), artifact_path="reports")
+        mlflow.sklearn.log_model(
+            model,
+            artifact_path="model",
+        )
+
+        mlflow.log_artifacts(
+            str(config.REPORTS_DIR),
+            artifact_path="reports",
+        )
 
         print(f"MLflow run ID: {run.info.run_id}")
 
     print("Metrics:")
+
     for name, value in metrics.items():
         print(f"  {name}: {value:.4f}")
+
     print(f"Model saved to: {config.MODEL_PATH}")
+
     return metrics
 
 

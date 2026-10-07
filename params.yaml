@@ -15,10 +15,11 @@ model:
   random_state: 42
 
 validation:
+  # TEMPORARY: reset after we see real Wine metrics
   min_accuracy: 0.92
   min_precision: 0.92
   min_recall: 0.92
   min_f1: 0.93
 
 mlflow:
-  experiment_name: breast-cancer-classifier
+  experiment_name: wine-classifier
