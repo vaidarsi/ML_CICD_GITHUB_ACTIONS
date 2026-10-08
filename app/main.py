@@ -50,7 +50,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Wine Classifier API",
+    title="Wine Classifier API v2",
     version=config.MODEL_VERSION,
     lifespan=lifespan,
 )
