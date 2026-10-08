@@ -56,14 +56,14 @@ jobs:
         run: black --check src app tests scripts
 
       - name: Pull dataset with DVC
-      - env:
-      - DAGSHUB_USER: ${{ secrets.vaidarsi }}
-      - DAGSHUB_TOKEN: ${{ secrets.79924ecf3efc6a29a277d9b4b13eda0cbc61f9cc }}
-      - run: |
-      - dvc remote modify dagshub --local auth basic
-      - dvc remote modify dagshub --local user "$vaidarsi"
-      - dvc remote modify dagshub --local password "$79924ecf3efc6a29a277d9b4b13eda0cbc61f9cc"
-      - dvc pull -r dagshub
+        env:
+          DAGSHUB_USER: ${{ secrets.DAGSHUB_USER }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          dvc remote modify dagshub --local auth basic
+          dvc remote modify dagshub --local user "$DAGSHUB_USER"
+          dvc remote modify dagshub --local password "$DAGSHUB_TOKEN"
+          dvc pull -r dagshub
 
       - name: Validate data
         run: python -m src.data_validation
