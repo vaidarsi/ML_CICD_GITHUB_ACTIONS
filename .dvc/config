@@ -1,4 +1,6 @@
 [core]
-    remote = localremote
+    remote = dagshub
 ['remote "localremote"']
     url = C:\Users\vaida\dvc_remote_storage
+['remote "dagshub"']
+    url = https://dagshub.com/vaidarsi/ML_CICD_GITHUB_ACTIONS.dvc
