@@ -58,11 +58,11 @@ jobs:
       - name: Pull dataset with DVC
       - env:
       - DAGSHUB_USER: ${{ secrets.vaidarsi }}
-      - DAGSHUB_TOKEN: ${{ secrets.ec2cbe94777c357281697ebfd6c33d7c9fa80fe2 }}
+      - DAGSHUB_TOKEN: ${{ secrets.79924ecf3efc6a29a277d9b4b13eda0cbc61f9cc }}
       - run: |
       - dvc remote modify dagshub --local auth basic
       - dvc remote modify dagshub --local user "$vaidarsi"
-      - dvc remote modify dagshub --local password "$ec2cbe94777c357281697ebfd6c33d7c9fa80fe2"
+      - dvc remote modify dagshub --local password "$79924ecf3efc6a29a277d9b4b13eda0cbc61f9cc"
       - dvc pull -r dagshub
 
       - name: Validate data
