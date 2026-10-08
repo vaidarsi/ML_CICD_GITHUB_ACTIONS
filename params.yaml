@@ -15,7 +15,7 @@ model:
   random_state: 42
 
 validation:
-  min_accuracy: 1.01
+  min_accuracy: 0.90
   min_precision: 0.90
   min_recall: 0.90
   min_f1: 0.90
