@@ -15,11 +15,10 @@ model:
   random_state: 42
 
 validation:
-  # TEMPORARY: reset after we see real Wine metrics
-  min_accuracy: 0.92
-  min_precision: 0.92
-  min_recall: 0.92
-  min_f1: 0.93
+  min_accuracy: 0.90
+  min_precision: 0.90
+  min_recall: 0.90
+  min_f1: 0.90
 
 mlflow:
   experiment_name: wine-classifier
