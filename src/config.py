@@ -28,6 +28,8 @@ METRICS_PATH = REPORTS_DIR / "metrics.json"
 # Environment variables (with safe defaults for local use)
 MODEL_PATH = Path(os.getenv("MODEL_PATH", PROJECT_ROOT / "models" / "model.joblib"))
 MODEL_VERSION = os.getenv("MODEL_VERSION", "local-dev")
-MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", f"file:{PROJECT_ROOT / 'mlruns'}")
+MLFLOW_TRACKING_URI = os.getenv(
+    "MLFLOW_TRACKING_URI", f"file:{PROJECT_ROOT / 'mlruns'}"
+)
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 API_PORT = int(os.getenv("API_PORT", "8000"))

@@ -62,15 +62,9 @@ def evaluate(model, X_test, y_test) -> dict:
 
     return {
         "accuracy": float(accuracy_score(y_test, y_pred)),
-        "precision": float(
-            precision_score(y_test, y_pred, average="macro")
-        ),
-        "recall": float(
-            recall_score(y_test, y_pred, average="macro")
-        ),
-        "f1_score": float(
-            f1_score(y_test, y_pred, average="macro")
-        ),
+        "precision": float(precision_score(y_test, y_pred, average="macro")),
+        "recall": float(recall_score(y_test, y_pred, average="macro")),
+        "f1_score": float(f1_score(y_test, y_pred, average="macro")),
     }
 
 
@@ -134,9 +128,7 @@ def train() -> dict:
 
     # Log to MLflow
     mlflow.set_tracking_uri(config.MLFLOW_TRACKING_URI)
-    mlflow.set_experiment(
-        config.PARAMS["mlflow"]["experiment_name"]
-    )
+    mlflow.set_experiment(config.PARAMS["mlflow"]["experiment_name"])
 
     with mlflow.start_run() as run:
         mlflow.log_param(

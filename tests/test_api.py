@@ -20,9 +20,7 @@ def client():
 def sample_features() -> list[float]:
     df = pd.read_csv(config.RAW_DATA_PATH)
 
-    return df.drop(
-        columns=[config.TARGET_COLUMN]
-    ).iloc[0].tolist()
+    return df.drop(columns=[config.TARGET_COLUMN]).iloc[0].tolist()
 
 
 def test_root(client):
