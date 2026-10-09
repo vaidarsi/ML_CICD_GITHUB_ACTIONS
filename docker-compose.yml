@@ -1,15 +1,15 @@
 services:
   api:
     build: .
-    image: breast-cancer-api:local
-    container_name: bc-api
+    image: wine-classifier-api:local
+    container_name: wine-api
     ports:
       - "8000:8000"
     restart: unless-stopped
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: bc-prometheus
+    container_name: wine-prometheus
     ports:
       - "9090:9090"
     volumes:
@@ -20,7 +20,7 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: bc-grafana
+    container_name: wine-grafana
     ports:
       - "3000:3000"
     environment:
