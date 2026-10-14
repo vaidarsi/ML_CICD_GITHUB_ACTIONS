@@ -13,8 +13,11 @@ on:
       - "dvc.yaml"
       - "params.yaml"
       - "Dockerfile"
+      - "docker-compose.yml"
       - "requirements*.txt"
+      - "monitoring/**"
       - ".github/workflows/**"
+
   pull_request:
     branches: [main]
     paths:
@@ -27,12 +30,15 @@ on:
       - "dvc.yaml"
       - "params.yaml"
       - "Dockerfile"
+      - "docker-compose.yml"
       - "requirements*.txt"
+      - "monitoring/**"
       - ".github/workflows/**"
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
